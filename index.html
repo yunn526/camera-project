@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#102a56">
+<title>Yunn Camera｜數位相機專題</title>
+<style>
+:root{--bg:#eef2f8;--paper:#ffffff;--ink:#172338;--muted:#657187;--line:#d9e1ee;--green:#4f75ad;--deep:#294b7d;--orange:#e9a36d;--button:#4f75ad;--buttonText:#ffffff;--card:#ffffff;--soft:#e8eef7}
+body.dark{--bg:#0a1220;--paper:#111d30;--ink:#edf3ff;--muted:#a7b5cc;--line:#293a54;--green:#4c78bd;--deep:#081a35;--button:#547db8;--buttonText:#ffffff;--card:#16243a;--soft:#1d304b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,"Noto Sans TC",sans-serif}
+button,select,input{font:inherit}button{cursor:pointer;border:0}
+.app{max-width:460px;min-height:100dvh;margin:0 auto;background:var(--paper);box-shadow:0 0 40px #24261b0d;position:relative;padding-bottom:88px;transition:background .2s,color .2s}
+.topbar{padding:20px 22px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.brand{font-size:13px;font-weight:900;letter-spacing:2px}.status{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px}.dot{width:7px;height:7px;border-radius:50%;background:#a6c85b}
+.page{display:none;padding:22px}.page.active{display:block}.eyebrow{font-size:11px;letter-spacing:2px;color:#7c8760;font-weight:800;text-transform:uppercase}
+h1{font-size:31px;line-height:1.2;margin:8px 0 10px;letter-spacing:-1px}h2{font-size:21px;margin:0 0 6px}p{line-height:1.7;color:var(--muted);font-size:14px;margin:0 0 18px}
+.hero{background:var(--deep);color:white;border-radius:25px;padding:22px;overflow:hidden;position:relative;min-height:245px;margin:22px 0 18px}
+.hero:after{content:"";position:absolute;width:180px;height:180px;border:1px solid #ffffff26;border-radius:50%;right:-42px;top:20px;box-shadow:0 0 0 18px #ffffff09,0 0 0 38px #ffffff06}
+.camera-art{height:125px;width:190px;background:#d9d9ca;border-radius:19px;position:relative;margin:12px auto 8px;transform:rotate(-5deg);box-shadow:0 14px 25px #0003}
+.camera-art:before{content:"";position:absolute;width:72px;height:72px;border-radius:50%;background:#343a31;border:7px solid #9ea397;left:58px;top:18px;box-shadow:inset 0 0 0 8px #20251e,inset 0 0 0 14px #58624f}
+.camera-art:after{content:"";position:absolute;width:22px;height:9px;background:#777d70;border-radius:4px;left:17px;top:18px}
+.camera-label{font-size:10px;color:#40453b;position:absolute;right:13px;bottom:12px;font-weight:900;letter-spacing:1px}
+.hero .eyebrow{color:var(--green)}.hero h2{font-size:19px;position:relative;z-index:1}.hero p{color:#d0d3c9;font-size:12px;margin:5px 0 0;position:relative;z-index:1}
+.primary{background:var(--button);color:var(--buttonText);padding:15px 18px;border-radius:15px;font-weight:850;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s}
+.primary:active,.secondary:active,.navbtn:active{transform:scale(.98)}
+.secondary{background:var(--button);color:var(--buttonText);padding:12px 14px;border-radius:13px;font-weight:750}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:24px 0 12px}.small{font-size:11px;color:var(--muted)}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.feature{border:1px solid var(--line);border-radius:17px;padding:15px}.feature .emoji{font-size:22px}.feature b{display:block;font-size:13px;margin:9px 0 4px}.feature span{font-size:11px;color:var(--muted);line-height:1.5}
+.camera-window{height:300px;border-radius:22px;background:#20251f;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;color:#d5d8cd;margin:18px 0 14px}
+#video,#canvasPreview{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:none}#video.show,#canvasPreview.show{display:block}
+.view-placeholder{text-align:center;z-index:1;padding:22px}.view-placeholder .big{font-size:42px}.view-placeholder strong{display:block;margin:9px 0}.view-placeholder small{color:#aeb4a8;line-height:1.6;display:block}
+.cam-top{position:absolute;z-index:2;top:13px;left:14px;right:14px;display:flex;justify-content:space-between;font-size:11px;color:white;text-shadow:0 1px 4px #000}
+.livepill{background:#e25f4b;padding:5px 8px;border-radius:20px;font-weight:800}.camera-controls{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 0 20px}
+.control-label{font-size:11px;color:var(--muted);display:block;margin-bottom:7px}.select{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:10px 12px;color:var(--ink);max-width:100%}
+.zoom-row{display:flex;gap:7px}.zoom-btn{background:var(--button);color:var(--buttonText);border-radius:12px;padding:10px 12px;font-size:12px;font-weight:800}.zoom-btn.selected{background:#345b91;color:white;outline:2px solid #91afd9;outline-offset:1px}
+.shutter-row{display:flex;align-items:center;justify-content:center;gap:18px;margin:14px 0 8px}.shutter{width:70px;height:70px;border-radius:50%;background:var(--button);color:white;border:6px solid #b8cce8;box-shadow:0 0 0 2px var(--deep);font-size:24px}.mini-action{background:var(--button);color:var(--buttonText);border-radius:13px;width:45px;height:45px;font-size:18px}
+.notice{background:#f2f0e8;border-radius:13px;padding:12px 13px;font-size:12px;color:#676b5e;line-height:1.6}
+.gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.photo-card{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:var(--card)}.photo-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#ddd}.photo-meta{padding:10px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:6px}.delete{background:none;color:#a55b4c;font-size:11px}
+.empty{padding:35px 12px;text-align:center;border:1px dashed #d9d4c7;border-radius:18px;color:var(--muted);margin-top:18px}.empty .big{font-size:30px;margin-bottom:8px}
+.settings-card{border:1px solid var(--line);border-radius:17px;padding:16px;margin:14px 0}.setting-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.setting-row:last-child{border:0}.setting-row b{font-size:13px}.setting-row small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.switch{appearance:none;width:42px;height:25px;border-radius:20px;background:#d5d3ca;position:relative;flex-shrink:0}.switch:after{content:"";width:19px;height:19px;border-radius:50%;position:absolute;left:3px;top:3px;background:white;transition:left .15s}.switch:checked{background:var(--button)}.switch:checked:after{left:20px}
+.bottomnav{position:fixed;z-index:10;bottom:0;left:50%;transform:translateX(-50%);width:min(460px,100%);padding:10px 15px calc(10px + env(safe-area-inset-bottom));background:color-mix(in srgb, var(--paper) 93%, transparent);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.navbtn{background:transparent;color:#929488;border-radius:12px;padding:7px 2px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px}.navbtn span:first-child{font-size:19px}.navbtn.active{color:white;background:var(--button);font-weight:850}
+.toast{position:fixed;z-index:20;bottom:94px;left:50%;transform:translateX(-50%);background:var(--button);color:white;padding:11px 16px;border-radius:12px;font-size:12px;display:none;max-width:90%;text-align:center}.toast.show{display:block}
+@media(min-width:700px){body{padding:22px 0}.app{border-radius:24px;overflow:hidden;min-height:calc(100dvh - 44px)}.bottomnav{bottom:22px;border-radius:0 0 24px 24px}.toast{bottom:110px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">YUNN <span style="color:#94b64c">/</span> CAMERA LAB</div>
+    <div class="status"><span class="dot"></span> 專題展示版</div>
+  </header>
+
+  <main>
+    <section class="page active" id="home">
+      <div class="eyebrow">DIGITAL CAMERA PROJECT</div>
+      <h1>把每個瞬間，<br>好好收藏。</h1>
+      <p>簡易式數位相機｜手機版操作介面展示</p>
+      <div class="hero">
+        <div class="eyebrow">DESIGNED FOR YOUR MOMENTS</div>
+        <div class="camera-art"><span class="camera-label">YUNN EDITION</span></div>
+        <h2>簡約設計・直覺操作</h2>
+        <p>倒數拍攝、倍率切換、照片預覽，一頁完成。</p>
+      </div>
+      <button class="primary" onclick="showPage('camera')">開始使用相機 <span>↗</span></button>
+      <div class="section-head"><h2>功能一覽</h2><span class="small">FEATURES</span></div>
+      <div class="feature-grid">
+        <div class="feature"><div class="emoji">◉</div><b>拍攝預覽</b><span>可嘗試啟用手機鏡頭，或使用展示模式。</span></div>
+        <div class="feature"><div class="emoji">◷</div><b>倒數計時</b><span>提供 10、15、20 秒倒數設定。</span></div>
+        <div class="feature"><div class="emoji">⌕</div><b>倍率選擇</b><span>模擬 0.5×、1×、2× 拍攝倍率。</span></div>
+        <div class="feature"><div class="emoji">▦</div><b>照片管理</b><span>預覽、下載或刪除本次拍攝的照片。</span></div>
+      </div>
+    </section>
+
+    <section class="page" id="camera">
+      <div class="eyebrow">CAMERA</div><h1>準備好拍照了嗎？</h1><p>允許使用相機後可顯示即時畫面；也可以直接體驗展示模式。</p>
+      <div class="camera-window" id="cameraWindow">
+        <video id="video" autoplay playsinline muted></video>
+        <img id="canvasPreview" alt="拍攝預覽">
+        <div class="view-placeholder" id="placeholder"><div class="big">◎</div><strong>相機預覽區</strong><small>按下「啟用手機鏡頭」可嘗試開啟相機<br>不方便授權也能使用展示模式</small></div>
+        <div class="cam-top"><span id="camMode">DEMO MODE</span><span class="livepill">● REC</span></div>
+      </div>
+      <button class="secondary" style="width:100%" id="cameraToggle" onclick="toggleCamera()">啟用手機鏡頭</button>
+      <div class="camera-controls">
+        <div><span class="control-label">倒數計時</span><select class="select" id="timer"><option value="0">立即拍攝</option><option value="10">10 秒</option><option value="15" selected>15 秒</option><option value="20">20 秒</option></select></div>
+        <div><span class="control-label">拍攝倍率</span><div class="zoom-row"><button class="zoom-btn" data-zoom="0.5" onclick="setZoom(0.5)">0.5×</button><button class="zoom-btn selected" data-zoom="1" onclick="setZoom(1)">1×</button><button class="zoom-btn" data-zoom="2" onclick="setZoom(2)">2×</button></div></div>
+      </div>
+      <div class="shutter-row">
+        <button class="mini-action" onclick="showPage('gallery')" aria-label="開啟相簿">▦</button>
+        <button class="shutter" onclick="takePhoto()" aria-label="拍照">●</button>
+        <button class="mini-action" onclick="resetCamera()" aria-label="重設">↺</button>
+      </div>
+      <div class="notice" id="cameraNote">展示模式：按下快門會產生一張示範照片，方便展示網站操作流程。</div>
+    </section>
+
+    <section class="page" id="gallery">
+      <div class="eyebrow">MY GALLERY</div><h1>拍攝紀錄</h1><p>本次瀏覽期間拍攝的照片會顯示在這裡。可點擊下載保存到裝置。</p>
+      <div class="section-head"><h2>我的照片</h2><span class="small" id="photoCount">0 張</span></div>
+      <div id="galleryGrid" class="gallery-grid"></div>
+      <div id="galleryEmpty" class="empty"><div class="big">▧</div><b>目前還沒有照片</b><p style="margin:8px 0 0">前往相機頁面，按下快門開始拍攝。</p><button class="secondary" style="margin-top:15px" onclick="showPage('camera')">前往拍攝</button></div>
+    </section>
+
+    <section class="page" id="settings">
+      <div class="eyebrow">PREFERENCES</div><h1>拍攝設定</h1><p>這些設定用來展示專題規劃中的操作選項。</p>
+      <div class="settings-card">
+        <div class="setting-row"><div><b>深色模式</b><small>切換深色介面，方便夜間使用</small></div><input class="switch" type="checkbox" id="darkSwitch" onchange="toggleDarkMode(this.checked)"></div>
+        <div class="setting-row"><div><b>拍攝提示音</b><small>拍攝完成時顯示提示</small></div><input class="switch" type="checkbox" id="soundSwitch" checked></div>
+        <div class="setting-row"><div><b>倒數時顯示提示</b><small>開始倒數時顯示剩餘秒數</small></div><input class="switch" type="checkbox" id="countSwitch" checked></div>
+        <div class="setting-row"><div><b>預設倒數秒數</b><small>進入相機時使用的倒數時間</small></div><select class="select" id="defaultTimer"><option value="10">10 秒</option><option value="15" selected>15 秒</option><option value="20">20 秒</option></select></div>
+      </div>
+      <div class="settings-card">
+        <h2 style="font-size:16px">關於本專題</h2>
+        <p style="margin:8px 0 0">本網站是數位相機專題的手機版介面原型，展示相機預覽、倒數拍攝、倍率選擇與照片管理。此版本不會連接自製硬體，也不會把照片上傳到伺服器。</p>
+      </div>
+      <button class="primary" onclick="applySettings()">套用設定</button>
+    </section>
+  </main>
+  <nav class="bottomnav" aria-label="主要導覽">
+    <button class="navbtn active" data-page="home" onclick="showPage('home')"><span>⌂</span><span>首頁</span></button>
+    <button class="navbtn" data-page="camera" onclick="showPage('camera')"><span>◎</span><span>相機</span></button>
+    <button class="navbtn" data-page="gallery" onclick="showPage('gallery')"><span>▦</span><span>相簿</span></button>
+    <button class="navbtn" data-page="settings" onclick="showPage('settings')"><span>⚙</span><span>設定</span></button>
+  </nav>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const pages = ['home','camera','gallery','settings'];
+let stream = null, zoom = 1, photos = [], countdownHandle = null;
+function toggleDarkMode(enabled){document.body.classList.toggle('dark',enabled);document.querySelector('meta[name="theme-color"]').content=enabled?'#0a1220':'#102a56';toast(enabled?'已切換深色模式':'已切換淺色模式');}
+function showPage(name){
+  pages.forEach(p=>document.getElementById(p).classList.toggle('active',p===name));
+  document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.page===name));
+  if(name==='gallery') renderGallery();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+let toastHandle;
+function toast(message){
+  const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');
+  clearTimeout(toastHandle);toastHandle=setTimeout(()=>el.classList.remove('show'),2600);
+}
+async function toggleCamera(){
+  if(stream){stopCamera();return}
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    toast('此瀏覽環境無法啟用相機，請改用展示模式或使用 HTTPS 網址。');return;
+  }
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});
+    const video=document.getElementById('video');video.srcObject=stream;video.classList.add('show');
+    document.getElementById('placeholder').style.display='none';
+    document.getElementById('canvasPreview').classList.remove('show');
+    document.getElementById('camMode').textContent='LIVE CAMERA';
+    document.getElementById('cameraToggle').textContent='關閉手機鏡頭';
+    document.getElementById('cameraNote').textContent='即時預覽已啟用。按下快門會擷取當前畫面。';
+    applyZoom();toast('手機鏡頭已啟用');
+  }catch(e){toast('無法開啟鏡頭，請確認權限，或繼續使用展示模式。')}
+}
+function stopCamera(){
+  if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;
+  const video=document.getElementById('video');video.srcObject=null;video.classList.remove('show');
+  document.getElementById('placeholder').style.display='block';
+  document.getElementById('camMode').textContent='DEMO MODE';
+  document.getElementById('cameraToggle').textContent='啟用手機鏡頭';
+  document.getElementById('cameraNote').textContent='展示模式：按下快門會產生一張示範照片，方便展示網站操作流程。';
+}
+function setZoom(value){
+  zoom=value;document.querySelectorAll('.zoom-btn').forEach(b=>b.classList.toggle('selected',Number(b.dataset.zoom)===value));
+  applyZoom();toast('已選擇 '+value+'× 倍率（介面展示）');
+}
+function applyZoom(){if(stream)document.getElementById('video').style.transform=`scale(${Math.min(zoom,3)})`}
+function resetCamera(){
+  document.getElementById('timer').value='0';setZoom(1);
+  document.getElementById('canvasPreview').classList.remove('show');
+  if(!stream)document.getElementById('placeholder').style.display='block';
+  toast('拍攝設定已重設');
+}
+function makeDemoPhoto(){
+  const c=document.createElement('canvas');c.width=900;c.height=1100;const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,900,1100);g.addColorStop(0,'#b8c7a0');g.addColorStop(.55,'#e5c7a5');g.addColorStop(1,'#5e6d57');x.fillStyle=g;x.fillRect(0,0,900,1100);
+  x.fillStyle='#e9e5d8';x.beginPath();x.arc(680,230,105,0,Math.PI*2);x.fill();
+  for(let i=0;i<7;i++){x.fillStyle=['#68785d','#7f8c6d','#a5ad83'][i%3];x.beginPath();x.ellipse(120+i*120,640+(i%3)*60,130,300,(-.2+i*.05),0,Math.PI*2);x.fill()}
+  x.fillStyle='#f7f2e7';x.font='bold 44px sans-serif';x.fillText('YUNN CAMERA',52,1000);
+  x.font='26px sans-serif';x.fillText(new Date().toLocaleString('zh-TW'),52,1045);return c.toDataURL('image/jpeg',.9);
+}
+function capturePhoto(){
+  let src;
+  if(stream){
+    const video=document.getElementById('video');const c=document.createElement('canvas');
+    c.width=video.videoWidth||900;c.height=video.videoHeight||1100;
+    const ctx=c.getContext('2d');ctx.save();ctx.translate(c.width/2,c.height/2);ctx.scale(zoom,zoom);ctx.drawImage(video,-c.width/2,-c.height/2,c.width,c.height);ctx.restore();src=c.toDataURL('image/jpeg',.92);
+  }else src=makeDemoPhoto();
+  photos.unshift({src,time:new Date().toLocaleString('zh-TW'),zoom});
+  document.getElementById('canvasPreview').src=src;document.getElementById('canvasPreview').classList.add('show');
+  document.getElementById('placeholder').style.display='none';renderGallery();toast('拍攝完成！照片已加入相簿');
+}
+function takePhoto(){
+  if(countdownHandle){clearInterval(countdownHandle);countdownHandle=null}
+  let seconds=Number(document.getElementById('timer').value);
+  if(seconds<=0){capturePhoto();return}
+  const note=document.getElementById('cameraNote');
+  let left=seconds;note.textContent='倒數拍攝中：'+left+' 秒後拍照，請保持畫面穩定。';toast('倒數開始：'+left+' 秒');
+  countdownHandle=setInterval(()=>{
+    left--;
+    if(left>0){note.textContent='倒數拍攝中：'+left+' 秒後拍照，請保持畫面穩定。';if(document.getElementById('countSwitch').checked)toast('還有 '+left+' 秒');}
+    else{clearInterval(countdownHandle);countdownHandle=null;capturePhoto();note.textContent='拍攝完成。可以繼續拍照，或前往相簿查看。';}
+  },1000);
+}
+function renderGallery(){
+  const grid=document.getElementById('galleryGrid'),empty=document.getElementById('galleryEmpty');
+  document.getElementById('photoCount').textContent=photos.length+' 張';
+  grid.innerHTML='';empty.style.display=photos.length?'none':'block';
+  photos.forEach((p,i)=>{
+    const card=document.createElement('article');card.className='photo-card';
+    const img=document.createElement('img');img.src=p.src;img.alt='拍攝照片 '+(i+1);
+    const meta=document.createElement('div');meta.className='photo-meta';
+    const label=document.createElement('span');label.textContent=p.zoom+'× · '+p.time;
+    const actions=document.createElement('span');
+    const dl=document.createElement('a');dl.href=p.src;dl.download='yunn-camera-'+(i+1)+'.jpg';dl.textContent='下載';dl.style.color='#526d2d';dl.style.textDecoration='none';dl.style.marginRight='8px';
+    const del=document.createElement('button');del.className='delete';del.textContent='刪除';del.onclick=()=>{photos.splice(i,1);renderGallery();toast('照片已從本次相簿移除')};
+    actions.append(dl,del);meta.append(label,actions);card.append(img,meta);grid.append(card);
+  });
+}
+function applySettings(){
+  document.getElementById('timer').value=document.getElementById('defaultTimer').value;
+  toast('設定已套用到相機頁面');
+}
+document.getElementById('defaultTimer').addEventListener('change',e=>document.getElementById('timer').value=e.target.value);
+</script>
+</body>
+</html>
